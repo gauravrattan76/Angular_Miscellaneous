@@ -1,0 +1,234 @@
+src/app/app.component.html
+
+<h1>
+  {{title}}
+</h1>
+
+<app-menu></app-menu>
+
+
+___________________________________________________________________
+
+src/app/menu/menu.component.html
+
+<ul>
+  <li>Menu Item</li>
+  <li>Menu Item</li>
+  <li>Menu Item</li>
+  <li>Menu Item</li>
+  <li>Menu Item</li>
+  <li>Menu Item</li>
+</ul>
+
+
+____________________________________________________________________________
+
+
+src/app/menu/menu.component.css
+
+:host {
+  background: #1a2580;
+  color: #fff;
+  position: fixed;
+  left: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20%;
+  min-width: 250px;
+  z-index: 9999;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+ul {
+  font-size: 18px;
+  line-height: 3;
+  font-weight: 400;
+  padding-top: 50px;
+  list-style: none;
+}
+____________________________________________________________________________________
+
+
+src/app/menu/app.component.ts
+
+<button (click)="toggleMenu()" class="hamburger">
+  <span>toggle menu</span>
+</button>
+
+<h1>
+  {{title}}
+</h1>
+ 
+<app-menu></app-menu>
+
+______________________________________________________________________________________
+
+
+src/app/app.component.cssCSS
+
+.hamburger {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 96px;
+  height: 96px;
+  font-size: 0;
+  text-indent: -9999px;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: 0;
+}
+
+
+.hamburger span {
+  display: block;
+  position: absolute;
+  top: 44px;
+  left: 18px;
+  right: 18px;
+  height: 8px;
+  background: #1a2580;
+}
+
+.hamburger span::before,
+.hamburger span::after {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #1a2580;
+  content: "";
+}
+
+.hamburger span::before {
+  top: -20px;
+}
+
+.hamburger span::after {
+  bottom: -20px;
+}
+
+________________________________________________________________________________
+
+
+#3 Animations
+This completes our dummy markup. Now it is time to get started with the actual animation. First of all we need to declare some imports in the component responsible for the animation. This will be our app.component. And create the toggleMenu method.
+
+src/app/app.component.ts
+
+import {Component, trigger, state, style, transition, animate} from '@angular/animations';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app works!';
+  
+  toggleMenu() {
+    
+  }
+}
+
+________________________________________________________________________________________________________
+Since our side navigation is located on the right side of the screen we want it be hidden by default and then slide in from the right side on toggle. There is no need to use *NgIf or something else. We simply move the navigation off the canvas to the right side by using transform:translate. On toggle the navigation will slide back in by resetting the transform to zero.
+The animation is declared in the component decorator in app.component.ts and then applied to the planned HTML element using the [@] syntax.
+
+Add the animation definition:
+
+src/app/app.component.ts
+
+import {Component, trigger, state, style, transition, animate} from '@angular/animations';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
+  ]
+})
+export class AppComponent {
+  title = 'app works!';
+
+  toggleMenu() {
+
+  }
+}
+
+
+_________________________________________________________________________________________________
+Now we need a variable that holds the current state of the animation (‘in’ or ‘out’). This will be later toggled. The initial state should be ‘out’ in order to hide the navigation by default. Also we are adding now the logic of the toggleMenu method, it will simply toggle the states value.
+
+src/app/app.component.ts
+
+import {Component, trigger, state, style, transition, animate} from '@angular/animations';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('out', style({
+        transform: 'translate3d(100%, 0, 0)'
+      })),
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
+    ]),
+  ]
+})
+export class AppComponent {
+  title = 'app works!';
+
+  menuState:string = 'out';
+
+  toggleMenu() {
+    // 1-line if statement that toggles the value:
+    this.menuState = this.menuState === 'out' ? 'in' : 'out';
+  }
+}
+
+_________________________________________________________________________________
+
+That’s pretty much it. Last step is to add the animation to the component call in our HTML markup using the already mentioned @ syntax. The first part matches the animations name and the given parameter is the value (‘out’ or ‘in’) from our component.
+
+
+<app-menu [@slideInOut]="menuState"></app-menu>
+1
+<app-menu [@slideInOut]="menuState"></app-menu>
+Before you ship this to production make sure to have the webanimations polyfill included, e.g. by adding this to your index.html:
+
+
+______________________________________________________________________________________
+
+src/index.html
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
+1
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
+ 
+
+ 
+
+#4 Final Result:
+
+

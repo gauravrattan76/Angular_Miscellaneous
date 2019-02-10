@@ -1,0 +1,14 @@
+node aTypescript_tutorial-
+********************************************
+
+
+You can install the CLI using npm. You can install Node and npm from https://nodejs.org. Inside of your project folder, create a package.json file with the command npm init. Then, install TypeScript globally and locally:
+
+$ npm install -g typescript
+$ npm install --save-dev typescript
+
+
+Create a file named helloWorld.ts and inside add the statement console.log("Hello, World"). You can write any JavaScript code in your file and TypeScript will understand it. The important thing to remember is to use the file extension ts. Next, compile the file:
+
+$ tsc helloWorld.ts
+This creates another file called helloWorld.js inside our directory. For now, the contents of our file have not changed because we did not use any TypeScript specific syntax. To execute the code we wrote, run the command node helloWorld.js.

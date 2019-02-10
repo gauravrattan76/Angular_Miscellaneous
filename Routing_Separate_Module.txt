@@ -1,0 +1,89 @@
+Routing_Separate_Module-
+**********************************************************************
+app-routing.module.ts-
+
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+
+import { HomeComponent } from './home/home.component';
+import { PatientComponent } from './patient/patient.component';
+import { DiagnosisComponent } from './diagnosis/diagnosis.component';
+
+
+const appRoutes: Routes = [
+  { path: 'Home', component: HomeComponent },
+  { path: 'Patient', component: PatientComponent },
+  { path: 'Diagnosis', component: DiagnosisComponent }
+];
+
+// The NgModule decorator is imported above
+// Pass the configured routes to the forRoot() method
+// to let the angular router know about our routes
+// Export the imported RouterModule so it is available
+// to the module that imports this AppRoutingModule
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+________________________________________________
+
+app.module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {DataService} from './Data.Service';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { PatientComponent } from './patient/patient.component';
+import { DiagnosisComponent } from './diagnosis/diagnosis.component';
+import {AppRoutingModule} from './app-routing.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    PatientComponent,
+    DiagnosisComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule
+  ],
+  providers: [DataService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+_____________________________________________________________________
+
+app.component.html-
+
+<div style="padding:5px">
+  <ul class="nav nav-tabs">
+      <li routerLinkActive="active">
+          <a routerLink="Home">Home</a>
+      </li>
+      <li routerLinkActive="active">
+          <a routerLink="Patient">Patient</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="Diagnosis">Employees</a>
+    </li>
+  </ul>
+  <br/>
+  <router-outlet></router-outlet>
+</div>
+
+
+
+________________________________________________________________________
+

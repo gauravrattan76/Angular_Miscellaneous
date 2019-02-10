@@ -1,0 +1,78 @@
+Filter_code_Working-
+_________________________________________
+
+
+
+
+ console.log(value.filter(a => a.RunContext == "CI_CX2.0"));
+        console.log(value.filter(a => a.RunContext.toLowerCase().indexOf(input.toString().toLowerCase())!==-1));
+                 return value.filter(a => a.RunContext.toLowerCase().indexOf(input.toString().toLowerCase())!==-1);
+
+
+
+export class FilterPipe implements PipeTransform {
+val=[];
+new=[];
+gen=[];
+    transform(value: any, input: string) {
+        if (input) {
+            for(let i in value)
+            {
+             this.val.push(value[i].RunContext);
+             console.log("inner value"+this.val[i]);
+            }
+            console.log(this.val);
+            input = input.toLowerCase();
+            this.new =this.val.filter(name => name.toString().toLowerCase().indexOf(input) > -1);
+            console.log(this.new);
+           
+        //     console.log(value.filter(a => a.RunContext.toLowerCase().indexOf(this.new.toString().toLowerCase())!==-1));
+        //    return value.filter(a => a.RunContext.toLowerCase().indexOf(this.new.toString().toLowerCase())!==-1);
+        console.log(value.filter(a => a.RunContext == "CI_CX2.0"));
+        console.log(value.filter(a => a.RunContext.toLowerCase().indexOf(input.toString().toLowerCase())!==-1));
+                 return value.filter(a => a.RunContext.toLowerCase().indexOf(input.toString().toLowerCase())!==-1);
+
+            // console.log( this.new.toString());
+            // for(let i in value)
+            // {
+            //     for(let k in this.new)
+            //     {
+            //       return value.filter(value => value[i].RunContext == this.new[k]);
+            //         }
+                    
+
+            // }
+           
+            // value.shift();
+            // console.log(value);
+            // for(let i in value)
+            // {
+            //  this.val.push(value[i].RunContext);
+            // }
+            // // console.log(this.val);
+            // input = input.toLowerCase();
+            // this.new =this.val.filter(name => name.toString().toLowerCase().indexOf(input) > -1);
+            // console.log( this.new);
+            // console.log(value);
+            // //code to return back the value
+            // _.forEach(value, function (value1, key1) {
+            //     console.log(value1);
+            //     console.log(value1.RunContext);
+            //     if(value1.RunContext == this.new)
+            //     {
+            //         console.log(value1);
+            //     }
+            //     // console.log(key1);
+                
+            // })
+
+        //    console.log(value.filter((item) => item.RunContext == this.new));
+        //    return value.filter(w)(item) => item.RunContext == this.ne;
+
+
+
+
+        }
+        return value;
+    }
+}

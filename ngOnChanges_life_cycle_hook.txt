@@ -1,0 +1,88 @@
+ngOnChanges Life cycle Hook-
+_________________________________________________________________________
+It is always called whenever one of our bound input changes; i.e., changes occur on those properties which are decorated with @Input() method.
+
+Ngonchanges life cycle hook will be only called when we have a input output property file changing.
+
+app.component.ts-
+
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+
+export class AppComponent {
+  enterValue:string;  
+  title = 'app';  
+
+}
+
+
+
+
+-----------------------------
+
+
+app.component.html-
+
+
+
+<div class="row">  
+    <div class="col-md-4">  
+      <div class="card">  
+         <div class="card-header bg-success text-white">ngOnChange()</div>  
+         <div class="card-body"><input type="text" [(ngModel)] = "enterValue" /><br/>  
+            <app-first [simpleInput]="enterValue" > </app-first>  
+         </div>  
+      </div>  
+    </div>  
+  </div>
+
+
+
+---------------------------------
+
+
+firstcomponent.ts-
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { Input, OnChanges,SimpleChanges } from '@angular/core';  
+
+
+@Component({
+  selector: 'app-first',
+  templateUrl: './first.component.html',
+  styleUrls: ['./first.component.css']
+})
+export class FirstComponent implements OnChanges {
+
+  constructor() { }
+@Input() simpleInput:string;
+ngOnChanges(changes : SimpleChanges)
+{
+  console.log("On changes being callled");
+}
+
+}
+
+
+
+
+--------------------------------------
+
+firstcomponent.html
+
+
+
+<div>  
+  You Entered :- {{simpleInput}}  
+</div>  
+
+

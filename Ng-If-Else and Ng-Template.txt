@@ -1,0 +1,12 @@
+*Ng-If-Else and Ng-Template-
+*************************************************************
+
+<h1>Welcome</h1>
+<!--This will not be shown-->
+<h1 myHidden>Hidden Welcome</h1>
+<br>
+<br>
+<ng-template #loading>Failed to do something wrong...</ng-template>
+<div *ngIf="true;else loading;">
+  Aravind is here
+</div>

@@ -1,0 +1,63 @@
+ngDoCheck life cycle hook-
+_________________________________________
+
+Whenever something changes on the template of a component or inside the component then ngDoCheck() executes. We can also say that it is called during every change detection run. This hook is called  after ngOnInit().
+
+Actually, this is very similar to ngOnChanges() hook, the major difference is that ngOnChanges() does not detect all the changes made to the input properties. It detects changes for those properties which are passed by value. However, ngDoCheck() detects changes for those properties also which are passed by reference such as arrays. Let’s understand with an example:-----------------
+
+app.component.html-
+
+ <div class="row">  
+                <div class="col-md-4">  
+                  <div class="card">  
+                     <div class="card-header bg-primary text-white">ngOnChange() vs ngDoCheck()</div>  
+                     <div class="card-body">  
+                       <input type="text" [(ngModel)] = "enterValue" /><br/>  
+                       <app-first [simpleInput]="enterValue" [arrList] = "myArr"></app-first>   
+                       <button class='btn btn-primary' (click)="addValue()"> Add </button>     
+                     </div>  
+                  </div>  
+                </div>  
+              </div>
+
+
+____________________________________________________________
+
+app.component.ts-
+
+export class AppComponent {  ,
+  enterValue:string;  
+  myArr: any = ['C', 'C++', 'C#'];  
+  addValue() {  
+    this.myArr.push("Java");  
+ ng Do check being called   }  
+}  
+
+
+_________________________________________________________
+
+childcomponent.html-
+
+
+<div>  
+  You Entered :- {{simpleInput}}  
+</div>  
+<div>  
+  <span>Array List (Pass by Parent's Component)</span><br>  
+  <span *ngFor="let record of arrList">{{record}}<br></span>  
+</div>  
+
+
+
+
+____________________________________________
+
+child compoenent.ts-
+
+@Input arrList:ny =[];
+ngDo Check(){
+""}
+
+
+
+

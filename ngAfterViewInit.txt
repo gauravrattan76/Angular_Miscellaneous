@@ -1,0 +1,12 @@
+ngAfterViewInIt-
+____________________________________________________
+
+ngAfterViewInit() should be called after a component's view, and its children's views, are created. I tested this, and found that children's ngAfterViewInit()s are called before the parent's ngAfterViewInit().
+
+
+Content is what is passed as children. View is the template of the current component.
+
+The view is initialized before the content and ngAfterViewInit() is therefore called before ngAfterContentInit().
+
+
+

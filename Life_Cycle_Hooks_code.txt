@@ -1,0 +1,178 @@
+Angular_life_cycle_hooks-
+***************************************************
+
+A component has a lifecycle managed by Angular.
+
+Angular creates it, renders it, creates and renders its children, checks it when its data-bound properties change, and destroys it before removing it from the DOM.
+
+
+
+
+Angular offers lifecycle hooks that provide visibility into these key life moments and the ability to act when they occur.
+
+
+A directive has the same set of lifecycle hooks, minus the hooks that are specific to component content and views.
+
+
+Lifecycle hooks are ngOnChanges, ngOnInit, ngDoCheck, ngAfterContentInit, ngAfterContentChecked, ngAfterViewInit, ngAfterViewChecked and ngOnDistroy. 
+
+____________________________________________________
+
+
+ngOnChanges() – Respond when Angular (re)sets data-bound input properties. The method receives a SimpleChangesobject of current and previous property values. Called before ngOnInit() and whenever one or more data-bound input properties change.
+ngOnInit() – Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component’s input properties.  Called once, after the first ngOnChanges().
+ngDoCheck() – Detect and act upon changes that Angular can’t or won’t detect on its own. Called during every change detection run, immediately after ngOnChanges() and ngOnInit().
+ngAfterContentInit() – Respond after Angular projects external content into the component’s view. Called once after the first ngDoCheck().  A component-only hook.
+ngAfterContentChecked() – Respond after Angular checks the content projected into the component. Called after the ngAfterContentInit() and every subsequent ngDoCheck().  A component-only hook.
+ngAfterViewInit() – Respond after Angular initializes the component’s views and child views. Called once after the first ngAfterContentChecked().  A component-only hook.
+ngAfterViewChecked() – Respond after Angular checks the component’s views and child views. Called after the ngAfterViewInit and every subsequent ngAfterContentChecked().A component-only hook.
+ngOnDestroy() – Cleanup just before Angular destroys the directive/component. Unsubscribe Observables and detach event handlers to avoid memory leaks. Called just before Angular destroys the directive/component.
+
+______________________________________________
+
+Code-
+
+
+app.component.ts-
+
+import { Component } from '@angular/core';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  showChild: boolean = true;
+  title = 'app';
+ 
+  onChange(value) {
+    this.title = value;
+  }
+ 
+  toggleChild() {
+    this.showChild = !this.showChild;
+  }
+}
+
+
+
+________________________________________
+
+
+app.component.html-
+
+
+
+<div style="text-align:center">
+   
+  <h1>
+    Welcome to {{title}}!
+  </h1>
+ 
+  <app-child *ngIf="showChild" [title]="title"></app-child>
+</div>
+ 
+<label for="title">Title:</label>
+<input type="text" id="title" (change)="onChange(inputtitle.value)" #inputtitle [value]="title">
+ 
+<button (click)="toggleChild()" >Toggle child component</button>
+
+
+
+
+________________________________________________________
+
+
+child.component.ts-
+
+
+
+import { Component, OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, Input, SimpleChanges } from '@angular/core';
+import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
+  @Input('title') title;
+ 
+  constructor() { }
+ 
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    console.log("onChanges")
+    console.log("onChanges previousValue", simpleChanges['title'].previousValue)
+    console.log("onChanges currentValue", simpleChanges['title'].currentValue)
+  }
+ 
+  ngOnInit() {
+    console.log("onInit")
+  }
+ 
+  ngDoCheck() {
+    console.log("doCheck")
+  }
+ 
+  ngAfterContentInit() {
+    console.log("afterContentInit")
+  }
+ 
+  ngAfterContentChecked() {
+    console.log("afterContentChecked")
+  }
+ 
+  ngAfterViewInit() {
+    console.log("afterViewInit")
+  }
+ 
+  ngAfterViewChecked() {
+    console.log("afterViewChecked")
+  }
+ 
+  ngOnDestroy() {
+    console.log("onDistroy")
+  }
+ 
+}
+
+
+
+__________________________________________________________
+
+childcomponent.html-
+
+
+<p>
+  child works!
+</p>
+
+__________________________________________________________
+
+output-
+
+
+onChanges
+child.component.ts:17 onChanges previousValue undefined
+child.component.ts:18 onChanges currentValue 2245
+child.component.ts:22 onInit
+child.component.ts:26 doCheck
+child.component.ts:30 afterContentInit
+child.component.ts:34 afterContentChecked
+child.component.ts:38 afterViewInit
+child.component.ts:42 afterViewChecked
+
+
+
+
+
+
+
+
+
+
+
+
+

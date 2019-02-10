@@ -1,0 +1,37 @@
+Form_Validation_angular_2-
+*********************************************************
+
+
+<form #employeeform="ngForm" (ngSubmit)="SaveEmployeeInfo(employeeform)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Create Patient</h3>
+        </div>
+  <div class="panel-body">
+    <div class="form-group" [class.has-error]="p.invalid && p.touched">
+      <label for="Pname" class="control-label">Patient Name:</label>
+      <input type="text" id="Pname" name="Pname" [(ngModel)]="Pname" class="form-control" #p="ngModel" required>
+      <span class="help-block" *ngIf="p.invalid && p.touched">
+        Patient Name can not be Null!!
+      </span>
+    </div>
+    <br><br>
+    <div class="form-group" [class.has-error]="e.touched && e.invalid">
+        <label for="Pemail" class="control-label">Patient Email:</label>
+        <input type="email" id="Pemail" name="Pemail" [(ngModel)]="Pemail" class="form-control" #e="ngModel" required>
+        <span class="help-block" *ngIf="e.touched && e.invalid">
+          This is not a valid email!!
+        </span>
+      </div>
+      <br><br>     
+  </div>
+  <br><br>
+  <div class="panel-footer">
+    <button class="btn btn-primary" type="submit">Save data</button>
+  </div>
+</div>
+</form>
+<br><br>
+Data entered by you is {{employeeform.value | json}}
+<br>
+value in template refernce variable {{p.value}}

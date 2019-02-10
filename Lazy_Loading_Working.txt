@@ -1,0 +1,160 @@
+Lazy_Loading_Working-
+***************************************************************************
+
+Go to app and create a fist component in first folder-
+
+firstcomponent.ts-
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-first',
+  template: `This is the first component`
+})
+export class FirstComponent {
+
+}
+
+
+________________________________________________________________
+
+app.routing.ts-
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { FirstComponent } from './first/first.component';
+
+const routes: Routes = [
+    { path: '', redirectTo: 'first', pathMatch: 'full' },
+  { path: 'first', component: FirstComponent },
+  { path: 'extra', loadChildren: 'src/extramodule/extra.module#ExtraModule' }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
+
+
+____________________________________________________________________________
+
+app.module.ts-
+
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { FirstComponent } from './first/first.component';
+import { routing } from './app.routing';
+import {ExtraModule}  from '../extramodule/extra.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    FirstComponent
+  ],
+  imports: [
+    BrowserModule,
+    routing
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+___________________________________________________________________________
+
+app.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+}
+
+
+__________________________________________________________________________
+
+app.component.html-
+
+
+<h1>My App</h1>
+    <nav>
+      <a routerLink="first">First</a>
+      <a routerLink="extra">Extra</a>
+    </nav>
+    <router-outlet></router-outlet>
+
+
+_________________________________________________________________________
+
+create a folder extramodule-
+
+3 files in it
+extra.module.ts
+extra.component.ts
+extra.routing.ts
+
+
+____________________________________________________________
+
+extra.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-extra',
+  template: `This is the extra component`
+})
+export class ExtraComponent {
+
+}
+
+
+___________________________________________________________
+
+extra.module.ts-
+
+import { NgModule } from '@angular/core';
+
+import { ExtraComponent } from './extra.component';
+import {routing} from './extra.routing';
+
+@NgModule({
+  declarations: [
+    ExtraComponent
+  ],
+  imports: [
+    routing
+  ],
+  providers: [],
+  bootstrap: [ExtraComponent]
+})
+export class ExtraModule { }
+
+
+
+_____________________________________________________________
+
+extra.routing.ts-
+
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { ExtraComponent } from './extra.component';
+
+const routes: Routes = [
+  { path: '', component: ExtraComponent }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(routes);
+
+
+

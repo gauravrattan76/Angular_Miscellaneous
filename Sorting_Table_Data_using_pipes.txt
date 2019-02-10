@@ -1,0 +1,98 @@
+Sorting_Table_Data_using_pipes-
+*********************************************************************
+
+app.module.ts-
+
+
+import the pipes and make them part of the declaration array.
+
+app.module.ts-
+
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import {FilterPipe} from './pipes'
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,FilterPipe
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+_______________________________________________________________
+app.component.ts-
+
+
+import { Component } from '@angular/core';
+import {FilterPipe} from './pipes'
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title:String;
+  names:any;
+  constructor(){
+    this.title = "Angular 2 simple search";
+        this.names = ['Prashobh','Abraham','Anil','Sam','Natasha','Marry','Zian','karan']
+  }
+}
+
+
+
+
+______________________________________________________________________--
+
+app.component.html--
+<div>
+  <h3> {{title}}</h3>
+  <input type="text" [(ngModel)]="queryString" id="search" placeholder="Search to type">
+
+  <ul>
+    <li *ngFor="let n of names | FilterPipe: queryString">
+      {{n}}
+    </li>
+  </ul>
+</div>
+
+
+
+______________________________________________________________________________
+
+pipe.ts-
+
+
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+    name: 'FilterPipe',
+})
+export class FilterPipe implements PipeTransform {
+    transform(value: any, input: string) {
+        if (input) {
+            input = input.toLowerCase();
+            return value.filter(function (el: any) {
+                return el.toLowerCase().indexOf(input) > -1;
+            })
+        }
+        return value;
+    }
+}
+
+

@@ -1,0 +1,33 @@
+using Contentchild to pass data from parent to child-
+******************************************************************************************
+
+import { ContentChild } from '@angular/core';
+
+
+providers: [DeveloperViewService,ParentChildService,SummaryComponent,PagerService],
+
+
+
+
+
+
+  @ContentChild(SummaryComponent)
+private sumcomponent: SummaryComponent;
+
+ 
+  onItemChange(data){
+    this.sumcomponent.childmethod(data);
+ 
+  
+  
+  }
+
+
+******************************************
+
+child component-
+
+childmethod()- is the method in the child component
+
+
+*************************************************

@@ -1,0 +1,67 @@
+View_Child_Angular-
+______________________________________________
+
+
+@ViewChild() using Component
+@ViewChild() can be used for component communication. A component will get instance of another component inside it using @ViewChild(). In this way parent component will be able to access the properties and methods of child component. The child component selector will be used in parent component HTML template. Now let us discuss example. 
+
+
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-number',
+  template: '<b>{{message}}</b>'
+})
+export class NumberComponent {
+	message:string ='';
+	count:number = 0;
+	increaseByOne() {
+	   this.count = this.count + 1;
+	   this.message = "Counter: " + this.count;
+	}
+	decreaseByOne() {
+	   this.count = this.count - 1;
+	   this.message = "Counter: " + this.count;
+	}
+} 
+
+
+_______________________________________________________
+
+
+Viewchild-
+
+
+import { Component, ViewChild } from '@angular/core';
+import { NumberComponent } from './number.component';
+
+@Component({
+  selector: 'app-number-parent',
+  templateUrl: './number-parent.component.html'
+})
+export class NumberParentComponent {
+    @ViewChild(NumberComponent)
+    private numberComponent: NumberComponent;
+    increase() {
+       this.numberComponent.increaseByOne();
+    }
+    decrease() {
+       this.numberComponent.decreaseByOne();
+    }
+} 
+
+
+__________________________________________________
+
+parent.html--
+
+
+<h3>@ViewChild using Component</h3>
+Number Example:
+<button type="button" (click)="increase()">Increase</button>
+<button type="button" (click)="decrease()">Decrease</button>
+<br/><br/>
+<app-number></app-number> 
+

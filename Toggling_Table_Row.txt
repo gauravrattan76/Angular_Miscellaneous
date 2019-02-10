@@ -1,0 +1,40 @@
+Code to Make the record toggle-
+****************************************************************
+
+<style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+  </style>
+  
+  
+  <table fixed>
+    <tr (click)="collapsed1=!collapsed1">
+      <td>
+        Click to toggle content 1
+      </td>
+    </tr>
+    <tr  *ngIf="collapsed1">
+        <td >
+          <p>Showing content 1</p>
+          <p>Grass is green</p>
+        </td>
+    </tr>
+    <tr (click)="collapsed2=!collapsed2">
+      <td>
+        Click to toggle content 2
+      </td>
+    </tr>
+    <tr *ngIf="collapsed2">
+        <td>
+          <p>Showing content 2</p>
+          <p>The sky is blue</p>
+        </td>
+    </tr>
+  </table>
