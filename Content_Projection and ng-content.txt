@@ -1,0 +1,45 @@
+Ng-content and content-projection-
+
+
+In Angular, content projection is used to project content in a component. Let’s take a closer look at how it works:
+
+Content projection allows you to insert a shadow DOM in your component. To put it simply, if you want to insert HTML elements or other components in a component, then you do that using the concept of content projection. In Angular, you achieve content projection using < ng-content >< /ng-content >.  You can make reusable components and scalable applications by properly using content projection.
+
+_________________________________________________________________
+
+
+childcomponent.ts-
+
+
+<div class="card">
+    <div class="card-header">
+    <div class="card-title">Welcome to GMAS</div>
+    </div>
+    <div class="card-body">
+  <ng-content class=".body"></ng-content>
+    </div>
+    <div class="card-footer">
+            <ng-content class=".footer"></ng-content>
+    This is the application Footer.
+    </div>
+    </div>
+
+
+
+______________________________
+
+parent-
+
+<app-child>
+<div>
+  <h1 class="body">Heloo There</h1>
+  <h2 class="footer">Yo Mamba</h2>
+</div>
+</app-child>
+
+
+______________________________
+
+Content projection is very useful to insert shadow DOM in your components. To insert HTML elements or other components in a component, you need to use content projection. In AngularJS 1.X, content projection was achieved using Transclusion, however, in Angular, it is achieved using <ng-content>.
+
+In the next post, you will learn about more important concepts in Angular, so stay tuned.
