@@ -1,0 +1,8 @@
+Difference between constructor and ngonit life cycle hooks-
+---------------------------------------------------------------------
+
+
+
+Constructor : constructor is a default method runs (by deafult) when component is being constructed. When you create an instance of a class that time also constructor(default method) would be called. So in other words, when component is being constructed or/and an instance is  created constructor(default method) is called and relevant code written within is called. Basically and generally in Angular2 it used to inject things like services when component is being constructed for the further use.
+
+OnInit: ngOnInit is component's life cycle hook which runs first after constructor(default method) when component is being initialized.

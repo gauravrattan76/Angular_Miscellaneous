@@ -1,0 +1,104 @@
+Creating Custom D?irective in angular 2-
+*****************************************************************************************************
+
+Types of Directives
+
+Angular 2 categorizes directives into 3 parts:
+
+Directives with templates known as Components
+
+Directives that creates and destroys DOM elements known as Structural Directives
+
+Directives that manipulate DOM by changing behavior and appearance known as Attribute Directives
+Components are what we have been playing with since Angular 2 was introduced so there is no need talking about it. We may go ahead and discuss the attribute and structural directives.
+
+Attribute Directives
+
+Attribute directives, as the name goes, are applied as attributes to elements. They are used to manipulate the DOM in all kinds of different ways except creating or destroying them. I like to call them DOM-friendly directives.
+
+Directives in this categories can help us achieve one of the following tasks:
+
+Apply conditional styles and classes to elements
+
+<p [style.color]="'blue'">Directives are awesome</p>
+
+Hide and show elements, conditionally (different from creating and destroying elements)
+<p [hidden]="shouldHide">Directives are awesome</p>
+
+Dynamically changing the behavior of a component based on a changing property
+Structural Directives
+
+Structural directives are not DOM-friendly in the sense that they create, destroy, or re-create DOM elements based on certain conditions.
+
+Difference between Structural directive and custom directive-
+
+This is a huge difference from what hidden attribute directive does. This is because hidden retains the DOM element but hides it from the user, whereas structural directives like *ngIf destroy the elements.
+
+*ngFor and [ngSwitch] are also common structural directives and you can relate them to the common programming flow tasks.
+
+Custom Attribute Directives
+We had a quick look on directives and types of directives in Angular 2. And as you just found out, using the existing directives is very simple. Let's now dig a little deeper and create some to suit our own needs.
+
+Angular 2 provides clean and simple APIs to help us create custom directives. You will find yourself creating custom attribute directives than structural directives—so let's begin with that.
+
+Let's get started
+_____________________________________________________________________--
+// ./app/shared/hidden.directive.ts
+import { Directive, ElementRef, Renderer } from '@angular/core';
+
+// Directive decorator
+@Directive({ selector: '[myHidden]' })
+// Directive class
+export class HiddenDirective {
+    constructor(el: ElementRef, renderer: Renderer) {
+     // Use renderer to render the element with styles
+       renderer.setElementStyle(el.nativeElement, 'display', 'none');
+    }
+}
+Directives are just like other Angular 2 members created as a class. The class is then decorated with the Directive decorator which is imported from the @angular/core barrel.
+
+The directive specifies a selector which is what will be looked up in our views. In this case, [myHidden].
+
+In the class constructor, we use 2 DOM helpers to track the host element and render a style to it by setting the display to none.
+
+We need to declare and export this directive via SharedModule so that our app module can load and import it. Thereby making it available to the app, globally.
+
+// ./app/shared/shared.module.ts
+import { NgModule } from '@angular/core';
+
+import { HiddenDirective } from './hidden.directive';
+
+@NgModule({
+    declarations: [
+        HiddenDirective
+    ],
+    exports: [
+        HiddenDirective
+    ]
+})
+export class SharedModule{}
+
+Now import into our AppModule:
+
+// ./app/app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+// Load SharedModule
+import { SharedModule } from './shared/shared.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  // Import SharedModule
+    imports: [BrowserModule, SharedModule],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent]
+})
+export class AppModule{}
+At this point, the directive is available for us to use anywhere in our app. Let's apply it somewhere in the app component's template:
+
+<!--./app/app.component.html-->
+<h1>Welcome</h1>
+<!--This will not be shown-->
+<h1 myHidden>Hidden Welcome</h1>
+We are adding the directive as an attribute (myHidden) to the markup

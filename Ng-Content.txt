@@ -1,0 +1,22 @@
+<app-child>Hello There!!</app-child>
+
+
+Hello there wont be getting shown as angular does is it will replace the selector with the html for the same.
+
+
+we need to use <ng-content> in the child component.html to show where the data appears.
+
+______________________________________________________________________________________
+
+app.component.html-
+
+<app-child>Hello There!!</app-child>
+
+
+_______________________________--
+
+
+child.component.html-
+
+<ng-content></ng-content>
+<button class="btn btn-primary" (click)="notify()">ClickMe!!</button>

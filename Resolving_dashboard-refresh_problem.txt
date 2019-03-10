@@ -1,0 +1,12 @@
+Resolving_dashboard-refresh_problem_includin_hash-
+___________________________________________________________
+
+
+
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+And in NgModule provider, add:
+
+providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+In main index.html File of the App change the base href to ./index.html from /
+
+The App when deployed in any server will give a real url for the page which can be accessed from any external application.

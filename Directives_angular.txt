@@ -1,0 +1,42 @@
+Directives-
+_______________________________________________________
+
+There are 3 types of directives in angular
+components-directive with a template
+structural directives-change the DOM layout by adding and removing DOM elements.ngfor,ngif.ngswitch
+attribute directives-changes the appearance or behaviour of an element,component or another directive.ngstyle ngclass
+custom directive--using directive keyword.
+
+________________________________________________________________
+
+Attribute driective example-
+
+
+appComponent.html-
+
+<p appHighlight>This is my directive.</p>
+
+
+
+________________________________________________
+
+directive.ts-
+
+
+
+
+import { Directive,ElementRef } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+
+  constructor(el : ElementRef) {
+    el.nativeElement.style.backgroundColor = '#5789D8';
+   }
+
+}
+
+
+

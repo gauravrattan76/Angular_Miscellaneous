@@ -1,0 +1,25 @@
+<ng-template> is an angular element for rendering HTML. It is never displayed directly. It can be displayed using structural directive, ViewContainerRef etc. Suppose we have following code in our HTML template.
+
+<ng-template>
+  <p>Hello World!</p>
+</ng-template>
+
+When the code runs then the code written inside <ng-template> will not be displayed but there will be a comment.
+<!---->
+
+
+<!-- <div *ngIf="lessons else loading">
+<h1>We have loads of data here</h1>
+<h2>This is the 2nd list data</h2> 
+  </div> -->
+<!--   
+  <ng-template #loading>
+      <div>Loading...</div>
+  </ng-template> -->
+
+
+  
+<h3>ng-template with ngFor</h3>
+<ng-template ngFor let-person [ngForOf]= "allPersons" let-i="index">
+  <p>{{i + 1}}. {{person.name}} : {{person.age}} </p>
+</ng-template> 

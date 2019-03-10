@@ -1,0 +1,226 @@
+Routing_passing_data_from_unrelated_components-
+******************************************************************************************************************************************
+
+
+app.component.html-
+
+<div style="padding:5px">
+  <ul class="nav nav-tabs">
+      <li routerLinkActive="active">
+          <a routerLink="Home">Home</a>
+      </li>
+      <li routerLinkActive="active">
+          <a routerLink="Patient">Patient</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="Diagnosis">Employees</a>
+    </li>
+  </ul>
+  <br/>
+  <router-outlet></router-outlet>
+</div>
+
+_____________________________________________________________________
+app.module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {DataService} from './Data.Service';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { PatientComponent } from './patient/patient.component';
+import { DiagnosisComponent } from './diagnosis/diagnosis.component';
+import {AppRoutingModule} from './app-routing.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    PatientComponent,
+    DiagnosisComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule
+  ],
+  providers: [DataService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+_______________________________________________________________________
+
+app-routing.module.ts-
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+
+import { HomeComponent } from './home/home.component';
+import { PatientComponent } from './patient/patient.component';
+import { DiagnosisComponent } from './diagnosis/diagnosis.component';
+
+
+const appRoutes: Routes = [
+  { path: 'Home', component: HomeComponent },
+  { path: 'Patient', component: PatientComponent },
+  { path: 'Diagnosis', component: DiagnosisComponent }
+];
+
+// The NgModule decorator is imported above
+// Pass the configured routes to the forRoot() method
+// to let the angular router know about our routes
+// Export the imported RouterModule so it is available
+// to the module that imports this AppRoutingModule
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+_________________________________________________________________________
+
+
+Dataservice.ts-
+
+
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+@Injectable()
+export class DataService {
+
+  private messageSource = new BehaviorSubject<any[]>([]);
+
+   currentdata = this.messageSource.asObservable();
+
+  constructor() { }
+
+  changedata(val: any[]) {
+    this.messageSource.next(val);
+  }
+
+}
+
+
+__________________________________________________________________________
+
+HomeComponent.html-
+
+<form #employeeform="ngForm" (ngSubmit)="SaveEmployeeInfo(employeeform)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Create Patient</h3>
+        </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <label for="Pname">Patient Name:</label>
+      <input type="text" id="Pname" name="Pname" [(ngModel)]="Pname" class="form-control">
+    </div>
+    <br><br>
+    <div class="form-group">
+        <label for="Pemail">Patient Email:</label>
+        <input type="email" id="Pemail" name="Pemail" [(ngModel)]="Pemail" class="form-control">
+      </div>
+      <br><br>
+  </div>
+  <br><br>
+  <div class="panel-footer">
+    <button class="btn btn-primary" type="submit">Save data</button>
+  </div>
+</div>
+</form>
+<br><br>
+Data entered by you is {{employeeform.value | json}}
+
+
+
+_________________________________________________________________________________
+
+HomeComponent.ts-
+
+
+import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {NgForm} from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import {DataService} from '../Data.Service';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+
+  data1:any;
+
+  constructor(private _router :Router,private data: DataService) { 
+  }
+
+  ngOnInit() {
+    this.data.currentdata.subscribe(message => this.data1 = message);
+    console.log("vale from ngonit"+ this.data1);
+  }
+
+  SaveEmployeeInfo(employeeform :NgForm){
+console.log(employeeform.value);
+ let dataholder: any = employeeform.value;
+ console.log("value coming from the variable =" + dataholder.Pname);
+this._router.navigate(['/Patient']);
+this.data.changedata(employeeform.value.Pname);
+
+  }
+}
+
+
+_____________________________________________________________________________
+
+PatientComponent.html-
+
+
+
+<input type="text" [(ngModel)]="data2">
+<br><br>
+{{"This is the patient screen"+ data2}}
+
+
+
+____________________________________________________________________________
+
+PatientComponent.ts-
+
+import { Component, OnInit } from '@angular/core';
+import {HomeComponent } from '../home/home.component';
+import { BehaviorSubject } from 'rxjs';
+import {DataService} from '../Data.Service';
+
+@Component({
+  selector: 'app-patient',
+  templateUrl: './patient.component.html',
+  styleUrls: ['./patient.component.css']
+})
+export class PatientComponent implements OnInit {
+
+data2:any;
+
+  constructor(private data:DataService) {
+
+   
+   }
+  ngOnInit() {
+    this.data.currentdata.subscribe(message => this.data2 = message)
+    console.log('This is the patient screen'+ this.data2);
+  }
+
+}
+
+
+
+
+
+

@@ -1,0 +1,266 @@
+Lazyloading_Routing_multiple_nested_routes-
+**************************************************************************************************
+
+app.component.html-
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">Welcome to MRTF Dashboard</a>
+    </div>
+    <ul class="nav navbar-nav">
+    <li><a routerLink="outer">Screen 1</a></li>
+    <li><a routerLink="separate">Screen 2</a></li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+
+_________________________________________________________
+
+app.module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import {OuterComponent} from './outer.component';
+import {MainComponent} from './main.component';
+import {routing} from './app.routing';
+import {SeparateModule} from '../separate/separate.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    OuterComponent,
+    MainComponent
+  ],
+  imports: [
+    BrowserModule,
+    routing,
+    SeparateModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+______________________________________________________________________
+
+app.routing.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import {OuterComponent} from './outer.component';
+import {MainComponent} from './main.component';
+import {routing} from './app.routing';
+import {SeparateModule} from '../separate/separate.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    OuterComponent,
+    MainComponent
+  ],
+  imports: [
+    BrowserModule,
+    routing,
+    SeparateModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+___________________________________________________________________________
+
+main.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-main',
+  template: `
+  <form action="/action_page.php">
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" id="email">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+  <div class="checkbox">
+    <label><input type="checkbox"> Remember me</label>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+  `
+})
+export class MainComponent {
+ 
+}
+
+
+____________________________________________________________
+
+outer.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-outer',
+  template: `
+  <div class="jumbotron">
+  <h1>Screen 1</h1>      
+  <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+</div>
+
+<div class="container">
+  <p>This is some text.</p>      
+  <p>This is another text.</p>      
+</div>
+  `
+})
+export class OuterComponent {
+ 
+}
+
+
+
+______________________________________________________________
+
+separate.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+  <ul class="nav nav-pills nav-stacked">
+  <li class="active"><a href="#">Welcome to Screen 2--</a></li>
+  <li><a routerLink="sep1">Sep 1 Screen</a></li>
+  <li><a routerLink="sep2">Sep 2 Screen</a></li>
+</ul>
+<div>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+</div>
+  `
+})
+export class SeparateComponent {}
+
+
+
+
+_____________________________________________________
+
+separate.module.ts-
+
+
+import { NgModule } from '@angular/core';
+
+import { SeparateComponent }   from './separate.component';
+
+import { Sep1Component }   from './sep1.component';
+import { Sep2Component }   from './sep2.component';
+import { routing } from './separate.routing';
+
+@NgModule({
+  imports: [routing],
+  declarations: [SeparateComponent,Sep1Component,Sep2Component],
+  exports:[SeparateComponent,Sep1Component,Sep2Component]
+})
+export class SeparateModule {}
+
+
+__________________________________________________________
+
+separate.routing.ts-
+
+
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { SeparateComponent }   from './separate.component';
+import { Sep1Component }   from './sep1.component';
+import { Sep2Component }   from './sep2.component';
+
+const routes: Routes = [
+  { path: 'separate', component: SeparateComponent },
+  { path: 'separate/sep1', component: Sep1Component },
+  { path: 'separate/sep2', component: Sep2Component },
+];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(routes);
+
+
+_______________________________________________________________________________________
+
+sep1.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+  <div class="container">
+  <h2>Inline form with .sr-only class</h2>
+  <p>Make the viewport larger than 768px wide to see that all of the form elements are inline, left aligned, and the labels are alongside.</p>
+  <form class="form-inline" action="/action_page.php">
+    <div class="form-group">
+      <label class="sr-only" for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email"  name="email">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox" name="remember"> Remember me</label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+  `
+})
+export class Sep1Component {}
+
+
+
+
+__________________________________________________________________________
+
+sep2.component.ts-
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+  <div class="jumbotron">
+  <h1>Separate 2 Sscreen</h1>      
+  <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+</div>
+
+<div class="container">
+  <p>This is some text.</p>      
+  <p>This is another text.</p>      
+</div>
+
+  `
+})
+export class Sep2Component {}
+
+
+

@@ -1,0 +1,175 @@
+Building a rest api using node js and express js-
+_____________________________________________________________________
+
+
+The REST API
+
+A Representational State Transfer (REST) interface provides a set of operations that can be invoked by a remote client over a network, using the HTTP protocol.
+
+Before we proceed, we must ensure we have the following installed in your computer.
+
+NodeJs
+Check that you have node and npm installed
+
+To check if you have Node.js installed, run this command in your terminal:
+node -v
+To confirm that you have npm installed you can run this command in your terminal:
+npm -v
+
+If the above is installed then we can proceed to create our first mini restful API
+
+Now lets start by creating our project directory, run this command in your terminal:
+mkdir simpleapi
+
+Then navigate to the created directory also by running this command
+cd simpleapi
+Initiate a new NPM project with this command npm init and provide all the details requested for
+
+We are going to use ExpressJs nodeJs framework to create our API, so run the code below in your terminal
+
+npm install express --save
+npm install body-parser --save
+body-parser Parses incoming request bodies;
+
+Now we need to create our API entry point app.js, and also our route file
+
+Screen Shot 2017-09-20 at 11.50.45 AM.png
+
+lets create the content of our app.js to start our server
+
+var express = require("express");
+var bodyParser = require("body-parser");
+var routes = require("./routes/routes.js");
+var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+routes(app);
+
+var server = app.listen(3000, function () {
+    console.log("app running on port.", server.address().port);
+});
+Yeah i know, i will try to explain
+
+var express = require("express");
+var bodyParser = require("body-parser");
+Here we are calling our installed modules and assigning them to variable express and bodyParser respectively
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+The two lines above tells express to accept both JSON and url encoded values
+
+var server = app.listen(3000, function () {
+    console.log("app running on port.", server.address().port);
+});
+Here we defined the port where our server should be running on, but just one more thing to finally start our awesome API, yeah!! the contents of our routes.js
+
+var appRouter = function (app) {
+  app.get("/", function(req, res) {
+    res.status(200).send("Welcome to our restful API");
+  });
+}
+
+module.exports = appRouter;
+The above code tells our server that anytime there is a GET request to the root of our application it should print Welcome to our restful API
+
+Now we can go ahead and run our API by typing node app.js in the terminal, you should get something like this printed on your terminal app running on port. 3000. Now type visit http://localhost:3000 and see it print the welcome message
+
+Lets be more creative with our API application, we will be adding two more routes to our API endpoint, the /user and /users/:num routes
+
+The idea is that anytime there is a call to the /user route, the API should generate one random user account details, like this:
+Screen Shot 2017-09-20 at 8.48.12 PM.png
+
+And call to /users/:num here the :num means we are passing something to replace that argument, so the actual call will look like /users/10, and
+this means we will generate 10 user's account
+
+Screen Shot 2017-09-20 at 8.54.23 PM.png
+
+Before we start writing the code to do that, lets first install faker that generate random user account details
+
+run npm install faker --save in your terminal
+
+So lets edit the contents of our routes.js to look exactly like this
+
+var faker = require("faker");
+
+var appRouter = function (app) {
+
+
+
+  app.get("/", function (req, res) {
+    res.status(200).send({ message: 'Welcome to our restful API' });
+  });
+
+  app.get("/user", function (req, res) {
+    var data = ({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      username: faker.internet.userName(),
+      email: faker.internet.email()
+    });
+    res.status(200).send(data);
+  });
+
+ app.get("/users/:num", function (req, res) {
+   var users = [];
+   var num = req.params.num;
+
+   if (isFinite(num) && num  > 0 ) {
+     for (i = 0; i <= num-1; i++) {
+       users.push({
+           firstName: faker.name.firstName(),
+           lastName: faker.name.lastName(),
+           username: faker.internet.userName(),
+           email: faker.internet.email()
+        });
+     }
+
+     res.status(200).send(users);
+    
+   } else {
+     res.status(400).send({ message: 'invalid number supplied' });
+   }
+
+ });
+}
+
+module.exports = appRouter;
+the first route /user here below generate a single user account and send the data to displayed the generated account
+
+app.get("/user", function (req, res) {
+    var data = ({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      username: faker.internet.userName(),
+      email: faker.internet.email()
+    });
+    res.status(200).send(data);
+  });
+While the second,
+
+  app.get("/users/:num", function (req, res) {
+   var users = [];
+   var num = req.params.num;
+
+   if (isFinite(num) && num  > 0 ) {
+     for (i = 0; i <= num-1; i++) {
+       users.push({
+           firstName: faker.name.firstName(),
+           lastName: faker.name.lastName(),
+           username: faker.internet.userName(),
+           email: faker.internet.email()
+        });
+     }
+
+     res.status(200).send(users);
+    
+   } else {
+     res.status(400).send({ message: 'invalid number supplied' });
+   }
+
+ });
+Checks if the parameter passed is a number, and that the number is greater than 0, then it generate lists of account of the given number
+
+Try checking this out in your browser or postman to see the wonder of our API

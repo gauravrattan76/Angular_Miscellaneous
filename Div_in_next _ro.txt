@@ -1,0 +1,37 @@
+Div appearing anf showing only for the current box-
+************************************************************************
+
+expandtestdata(data){
+console.log(data);
+data.Result =!data.Result;
+this.garv = data.Result;
+this.apiurl ="http://3.204.110.149:5005/runInfo/testInfo/runId/"+ data.RunID;
+this.http.get(this.apiurl)
+.pipe(map((response: Response) => response.json()))
+.subscribe(data => {
+    this.hidedata = data;
+    this.hidedata =  this.testinfodata.data;
+    console.log(this.hidedata);
+});
+}
+
+
+**********************************************************************88
+
+html logic-
+
+  <tr *ngFor="let queryParem of testinfodata" >
+      
+              <td><span class="glyphicon glyphicon-plus" (click)="expandtestdata(queryParem)"></span></td>
+              <td>{{queryParem.RunID}}</td>
+              <td>{{queryParem.TestSetName}}</td>
+              <td>{{queryParem.Context}}</td>
+              <td>{{queryParem.Location}}</td>
+              <td>{{queryParem.Type}}</td>
+              <td>{{queryParem.Result}}</td>
+              <td>{{queryParem.Status}}</td>
+              <td>{{queryParem.Softwareversion}}</td>
+              <td>{{queryParem.Date}}</td>
+              <td>{{queryParem.Duration}}</td>
+              <td ><div *ngIf="!queryParem.Result"><div>Hi Gaurav!!</div></div></td>
+      </tr>

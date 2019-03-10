@@ -1,0 +1,126 @@
+Lazy_Loading_Easy_Working-
+******************************************************************************************
+app.routing.ts-
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { EagerComponent } from './eager.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: 'eager', pathMatch: 'full' },
+  { path: 'eager', component: EagerComponent },
+  { path: 'lazy', loadChildren: 'src/app/lazy/lazy.module#LazyModule' }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
+
+_______________________________________
+
+app.mdoule.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {RouterModule,Router} from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { EagerComponent } from './eager.component';
+import { routing } from './app.routing';
+import {LazyModule} from '../app/lazy/lazy.module';
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    EagerComponent
+  ],
+  imports: [
+    BrowserModule,
+    routing
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+__________________________________________________________________-
+
+app.component.ts-
+
+import { Component } from '@angular/core';
+import {RouterModule,Router} from '@angular/router';
+
+
+@Component({
+  selector: 'app-root',
+  template:`
+  <h1>My App</h1>
+  <button class="btn btn-primary">Button</button>
+    <nav>
+      <a routerLink="eager">Eager</a>
+      <a routerLink="lazy">Lazy</a>
+    </nav>
+    <router-outlet></router-outlet>
+  `
+})
+export class AppComponent {
+  title = 'app';
+}
+
+
+___________________________________________________________--
+
+eager.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  template: '<p>Eager Component</p>'
+})
+export class EagerComponent {}
+
+
+_________________________________________________________________
+
+Lazy.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  template: '<p>Lazy Component</p>'
+})
+export class LazyComponent {}
+
+
+_________________________________________________________________
+
+Lazy.mdoule.ts-
+
+import { NgModule } from '@angular/core';
+
+import { LazyComponent }   from './lazy.component';
+import { routing } from './lazy.routing';
+
+@NgModule({
+  imports: [routing],
+  declarations: [LazyComponent]
+})
+export class LazyModule {}
+
+
+______________________________________________________________________
+
+Lazy.routing.ts-
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { LazyComponent } from './lazy.component';
+
+const routes: Routes = [
+  { path: '', component: LazyComponent }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(routes);

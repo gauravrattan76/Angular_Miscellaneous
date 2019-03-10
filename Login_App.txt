@@ -1,0 +1,140 @@
+Login_App-
+*****************************************************************************
+
+app.module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { UserComponent } from './user/user.component';
+import {AppRoutingModule} from './app.routing.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    UserComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+_____________________________________________________________________________
+
+app.component.html-
+
+<div style="padding:5px">
+    <ul class="nav nav-tabs">
+        <li routerLinkActive="active">
+            <a routerLink="Login">Login</a>
+        </li>
+        <!-- <li routerLinkActive="active">
+            <a routerLink="User">User</a>
+        </li> -->
+    </ul>
+    <br/>
+    <router-outlet></router-outlet>
+  </div>
+
+
+
+__________________________________________________________________________________
+
+app.routing.module.ts-
+
+import { NgModule } from '@angular/core';
+import {RouterModule,Routes} from '@angular/router';
+
+
+import { LoginComponent } from './login/login.component';
+import { UserComponent } from './user/user.component';
+
+const appRoutes: Routes = [
+    { path: 'Login', component: LoginComponent },
+    { path: 'User', component: UserComponent },
+  ];
+
+@NgModule({
+ 
+  imports: [
+    RouterModule.forRoot(appRoutes)
+  ],
+  exports:[RouterModule],
+})
+
+export class AppRoutingModule { }
+
+
+_______________________________________________________________________________________________
+
+LoginComponent.html-
+
+<form>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" style="text-align: center;">User Login Page</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="Uname"><h3 style="margin-left: 600px;">UserName:</h3></label>
+          <input type="text" name="Uname" id="Uname" class="form-control" [(ngModel)]="Uname">
+        </div>
+        <br><br>
+        <div class="form-group">
+            <label for="Upassword"><h3 style="margin-left: 600px;">UserPassword:</h3></label>
+            <input type="password" name="Upassword" id="Upassword" class="form-control" [(ngModel)]="Upassword">
+          </div>
+          <br><br>
+          <button class="btn btn-primary" (click)="login()" style="margin-left: 650px;">Login</button>
+      </div>
+    </div>
+  </form>
+
+  
+_______________________________________________________________________________________________________
+
+LoginComponent.ts-
+
+import { Component, OnInit } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+  Uname:string;
+  Upassword:any;
+  constructor(private _router:Router) { }
+
+  ngOnInit() {
+  }
+   
+  login(){
+if(this.Uname =="gaurav" && this.Upassword=="gaurav")
+{
+  alert("Validation is working!!");
+  this._router.navigate(['/User']);
+}
+
+else
+{
+alert("Validation is not working!!");
+
+}
+
+  }
+}

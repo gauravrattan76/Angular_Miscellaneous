@@ -1,0 +1,94 @@
+Very_Important_Nested_Routing-
+********************************************************************************
+
+app.routing.ts-
+
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { ArtistComponentComponent } from './artist-component/artist-component.component';
+import { SampleComponent } from './sample/sample.component';
+import { ArtistTrackListComponentComponent } from './artist-track-list-component/artist-track-list-component.component';
+import { ArtistAlbumListComponentComponent } from './artist-album-list-component/artist-album-list-component.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: 'sample', pathMatch: 'full' },
+  { path: 'sample', component: SampleComponent },
+  { path: 'Artist', component: ArtistComponentComponent,
+  children: [
+    // {path: '', redirectTo: 'tracks'}, 
+    {path: 'tracks', component: ArtistTrackListComponentComponent}, 
+    {path: 'albums', component: ArtistAlbumListComponentComponent}, 
+  ]
+ },
+ {path: '**', component: SampleComponent}
+
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
+____________________________________________________________________________________
+
+app.module.ts
+
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import {NgModule,ApplicationRef
+} from '@angular/core';
+import { SlideMenuModule } from 'node_modules/cuppa-ng2-slidemenu/cuppa-ng2-slidemenu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppComponent } from './app.component';
+import { ArtistComponentComponent } from './artist-component/artist-component.component';
+import { ArtistTrackListComponentComponent } from './artist-track-list-component/artist-track-list-component.component';
+import { ArtistAlbumListComponentComponent } from './artist-album-list-component/artist-album-list-component.component';
+import { SampleComponent } from './sample/sample.component';
+import {routing} from './app.routing';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ArtistComponentComponent,
+    ArtistTrackListComponentComponent,
+    ArtistAlbumListComponentComponent,
+    SampleComponent
+  ],
+  imports: [ // import Angular's modules
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    SlideMenuModule,
+    BrowserAnimationsModule,
+    routing
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule {
+
+}
+
+________________________________________________________________________-
+
+app.component.html-
+
+
+<h1>Hi Gaurav!!</h1>
+<br>
+<nav>
+  <a routerLink="sample">Sample</a>
+  <a routerLink="Artist">Artist component</a>
+</nav>
+<router-outlet></router-outlet>
+
+
+
+_________________________________________________________________________________
+
+<p>
+  artist-component works!
+</p>
+<p>
+  <a [routerLink]="['./tracks']">Tracks</a> |
+  <a [routerLink]="['./albums']">Albums</a>
+</p>
+<router-outlet></router-outlet>

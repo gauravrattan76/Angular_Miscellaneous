@@ -1,0 +1,88 @@
+Creating_Separate_Modules-
+****************************************************************************
+
+Create a folder outside and name it as Credit-
+
+Credit.Module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import {CreditComponent } from './Credit.Component';
+
+@NgModule({
+  declarations: [
+    CreditComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  exports:[CreditComponent],
+  bootstrap: [CreditComponent]
+})
+export class CreditModule { }
+
+
+
+_______________________________________________
+
+Credit.Component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-credit',
+  template: `Hi This is the credit Module!!`
+})
+export class CreditComponent {
+  
+}
+
+
+__________________________________________________
+
+App.module.ts-
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import {CreditModule} from '../Credit/Credit.Module';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    CreditModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+___________________________________________________-
+
+app.component.ts-
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+}
+
+
+________________________________________________
+
+app.component.html-
+
+
+<app-credit></app-credit>

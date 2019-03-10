@@ -1,0 +1,91 @@
+ts file-
+*********************************
+
+
+import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Http, Response } from '@angular/http';
+
+@Component({
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+ 
+export class AppComponent implements OnInit{
+ 
+
+  testinfodata:any;
+  garv:any;
+  apiurl:any;
+  hidedata:any;
+
+
+  constructor( private http: Http) { }
+  
+  ngOnInit(){
+
+  this.http.get("http://3.204.110.149:5005/allRunInfoData")
+  .pipe(map((response: Response) => response.json()))
+  .subscribe(data => {
+      this.testinfodata = data;
+      this.testinfodata =  this.testinfodata.data;
+      console.log(this.testinfodata);
+  
+  });
+}
+
+expandtestdata(data){
+console.log(data);
+this.garv = true;
+this.apiurl ="http://3.204.110.149:5005/runInfo/testInfo/runId/"+ data.RunID;
+this.http.get(this.apiurl)
+.pipe(map((response: Response) => response.json()))
+.subscribe(data => {
+    this.hidedata = data;
+    this.hidedata =  this.testinfodata.data;
+});
+}
+
+ 
+  }
+
+*******************************************************
+html file-
+
+<table class="table" style="border: 1 px solid black;border-collapse: collapse">
+  <thead>
+      <tr class="tableheader">
+   
+            <th></th>
+            <th>RunID</th>
+            <th>TestSetName</th>
+            <th>Context</th>
+            <th>Location</th>
+            <th>Type</th>
+            <th>Result</th>
+            <th>Status</th>
+            <th>SoftwareVersion</th>
+            <th>Date</th>
+            <th>Duration</th>
+         
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let queryParem of testinfodata" >
+      
+              <td><span class="glyphicon glyphicon-plus" (click)="expandtestdata(queryParem)"></span></td>
+              <td>{{queryParem.RunID}}</td>
+              <td>{{queryParem.TestSetName}}</td>
+              <td>{{queryParem.Context}}</td>
+              <td>{{queryParem.Location}}</td>
+              <td>{{queryParem.Type}}</td>
+              <td>{{queryParem.Result}}</td>
+              <td>{{queryParem.Status}}</td>
+              <td>{{queryParem.Softwareversion}}</td>
+              <td>{{queryParem.Date}}</td>
+              <td>{{queryParem.Duration}}</td>
+              <td ><div *ngIf="garv"><div>Hi Gaurav!!</div></div></td>
+      </tr>
+  </tbody>
+</table>

@@ -1,0 +1,377 @@
+Jherkin Notes-
+********************************************************
+
+
+Scenario is one of the core Gherkin structures. Every scenario starts with the Scenario: keyword (or localized one), followed by an optional scenario title. Each feature can have one or more scenarios, and every scenario consists of one or more 
+
+
+The following scenarios each have 3 steps:
+
+Scenario: Wilson posts to his own blog
+  Given I am logged in as Wilson
+  When I try to post to "Expensive Therapy"
+  Then I should see "Your article was published."
+
+Scenario: Wilson fails to post to somebody else's blog
+  Given I am logged in as Wilson
+  When I try to post to "Greg's anti-tax rants"
+  Then I should see "Hey! That's not your blog!"
+
+Scenario: Greg posts to a client's blog
+  Given I am logged in as Greg
+  When I try to post to "Expensive Therapy"
+  Then I should see "Your article was published."
+
+
+
+
+______________________________________________________________________
+
+
+Using Place Holder for scenarios-
+
+
+Scenario Outlines allow us to more concisely express these examples through the use of a template with placeholders:
+
+Scenario Outline: Eating
+  Given there are <start> cucumbers
+  When I eat <eat> cucumbers
+  Then I should have <left> cucumbers
+
+  Examples:
+    | start | eat | left |
+    |  12   |  5  |  7   |
+    |  20   |  5  |  15  |
+
+
+The Scenario outline steps provide a template which is never directly run. A Scenario Outline is run once for each row in the Examples section beneath it (not counting the first row of column headers).
+
+The Scenario Outline uses placeholders, which are contained within < > in the Scenario Outline’s steps. For example:
+
+______________________________________________________________________
+
+
+So when running the first row of our example:
+
+Scenario Outline: controlling order
+  Given there are <start> cucumbers
+  When I eat <eat> cucumbers
+  Then I should have <left> cucumbers
+
+  Examples:
+    | start | eat | left |
+    |  12   |  5  |  7   |
+The scenario that is actually run is:
+
+Scenario Outline: controlling order
+  # <start> replaced with 12:
+  Given there are 12 cucumbers
+  # <eat> replaced with 5:
+  When I eat 5 cucumbers
+  # <left> replaced with 7:
+  Then I should have 7 cucumbers
+
+
+
+____________________________________________________________
+
+
+
+Backgrounds-
+
+
+
+
+Backgrounds allows you to add some context to all scenarios in a single feature. A Background is like an untitled scenario, containing a number of steps. The difference is when it is run: the background is run before each of your scenarios, but after your BeforeScenario hooks (Hooking into the Test Process - Hooks).
+
+Feature: Multiple site support
+
+  Background:
+    Given a global administrator named "Greg"
+    And a blog named "Greg's anti-tax rants"
+    And a customer named "Wilson"
+    And a blog named "Expensive Therapy" owned by "Wilson"
+
+  Scenario: Wilson posts to his own blog
+    Given I am logged in as Wilson
+    When I try to post to "Expensive Therapy"
+    Then I should see "Your article was published."
+
+  Scenario: Greg posts to a client's blog
+    Given I am logged in as Greg
+    When I try to post to "Expensive Therapy"
+    Then I should see "Your article was published."
+
+
+
+______________________________________________________________________
+
+
+Steps-
+
+Features consist of steps, also known as Givens, Whens and Thens.
+
+___________________________________________________________________
+
+Given-
+
+
+The purpose of Given steps is to put the system in a known state before the user (or external system) starts interacting with the system (in the When steps). Avoid talking about user interaction in givens. If you have worked with use cases, givens are your preconditions.
+
+To create records (model instances) or set up the database:
+
+Given there are no users on site
+Given the database is clean
+
+
+Authenticate a user (An exception to the no-interaction recommendation. Things that “happened earlier” are ok):
+
+Given I am logged in as "Everzet"
+
+
+And for all the symfony users out there, we recommend using a Given step with a tables arguments to set up records instead of fixtures. This way you can read the scenario all in one place and make sense out of it without having to jump between files:
+
+Given there are users:
+  | username | password | email               |
+  | everzet  | 123456   | everzet@knplabs.com |
+  | fabpot   | 22@222   | fabpot@symfony.com  |
+
+
+
+____________________________________________________________________
+
+Whens-
+
+
+The purpose of When steps is to describe the key action the user performs (or, using Robert C. Martin’s metaphor, the state transition).
+
+Two good examples of Whens use are:
+
+Interact with a web page (the Mink library gives you many web-friendly When steps out of the box):
+
+When I am on "/some/page"
+When I fill "username" with "everzet"
+When I fill "password" with "123456"
+When I press "login"
+Interact with some CLI library (call commands and record output):
+
+When I call "ls -la"
+
+
+________________________________________________________________________
+
+Thens-
+
+
+
+The purpose of Then steps is to observe outcomes. The observations should be related to the business value/benefit in your feature description. The observations should inspect the output of the system (a report, user interface, message, command output) and not something deeply buried inside it (that has no business value and is instead part of the implementation).
+
+Verify that something related to the Given+When is (or is not) in the output
+Check that some external system has received the expected message (was an email with specific content successfully sent?)
+When I call "echo hello"
+Then the output should be "hello"
+
+
+
+_________________________________________________________________________
+
+and,but
+
+
+and, but¶
+If you have several Given, When or Then steps you can write:
+
+Scenario: Multiple Givens
+  Given one thing
+  Given an other thing
+  Given yet an other thing
+  When I open my eyes
+  Then I see something
+  Then I don't see something else
+
+
+
+____________________________________________________________________________
+
+Or you can use And or But steps, allowing your Scenario to read more fluently:
+
+Scenario: Multiple Givens
+  Given one thing
+  And an other thing
+  And yet an other thing
+  When I open my eyes
+  Then I see something
+  But I don't see something else
+
+
+_______________________________________________________________________________
+
+MultiLine Arguments-
+
+The regular expression matching in steps lets you capture small strings from your steps and receive them in your step definitions. However, there are times when you want to pass a richer data structure from a step to a step definition.
+
+This is what multiline step arguments are for. They are written on lines immediately following a step, and are passed to the step definition method as the last argument.
+
+Multiline step arguments come in two flavours: tables or pystrings.
+
+
+tables-
+
+Tables as arguments to steps are handy for specifying a larger data set - usually as input to a Given or as expected output from a Then.
+
+
+Scenario:
+  Given the following people exist:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+    | Bryan | bryan@email.org | 456   |
+
+
+/**
+ * @Given /the following people exist:/
+ */
+public function thePeopleExist(TableNode $table)
+{
+    $hash = $table->getHash();
+    foreach ($hash as $row) {
+        // $row['name'], $row['email'], $row['phone']
+    }
+}
+
+
+______________________________________________________________________
+
+Pystrings-
+
+Multiline Strings (also known as PyStrings) are handy for specifying a larger piece of text. This is done using the so-called PyString syntax. The text should be offset by delimiters consisting of three double-quote marks (""") on lines by themselves:
+
+Scenario:
+  Given a blog post named "Random" with:
+    """
+    Some Title, Eh?
+    ===============
+    Here is the first paragraph of my blog post.
+    Lorem ipsum dolor sit amet, consectetur adipiscing
+    elit.
+    """
+The inspiration for PyString comes from Python where """ is used to delineate docstrings, much in the way /* ... */ is used for multiline docblocks in PHP.
+
+In your step definition, there’s no need to find this text and match it in your regular expression. The text will automatically be passed as the last argument into the step definition method. For example:
+
+/**
+ * @Given /a blog post named "([^"]+)" with:/
+ */
+public function blogPost($title, PyStringNode $markdown)
+{
+    $this->createPost($title, $markdown->getRaw());
+}
+PyStrings are stored in a PyStringNode instance, which you can simply convert to a string with (string) $pystring or $pystring->getRaw() as in the example above.
+
+Indentation of the opening """ is not important, although common practice is two spaces in from the enclosing step. The indentation inside the triple quotes, however, is significant. Each line of the string passed to the step definition’s callback will be de-indented according to the opening """. Indentation beyond the column of the opening """ will therefore be preserved.
+
+
+____________________________________________________________________
+
+Tags-
+
+Tags are a great way to organize your features and scenarios. Consider this example:
+
+@billing
+Feature: Verify billing
+
+  @important
+  Scenario: Missing product description
+
+  Scenario: Several products
+A Scenario or Feature can have as many tags as you like, just separate them with spaces:
+
+@billing @bicker @annoy
+Feature: Verify billing
+If a tag exists on a Feature, Behat will assign that tag to all child Scenarios and Scenario Outlines too.
+
+______________________________________________________________________
+
+
+
+Usage of jherkin with cucmber-
+
+
+Features file contain high level description of the Test Scenario in simple language. It is known as Gherkin. Gherkin is a plain English text language
+
+Feature: A feature would describe the current test script which has to be executed.
+Scenario: Scenario describes the steps and expected outcome for a particular test case.
+Scenario Outline: Same scenario can be executed for multiple sets of data using scenario outline. The data is provided by a tabular structure separated by (I I).
+Given: It specifies the context of the text to be executed. By using datatables "Given", step can also be parameterized.
+When: "When" specifies the test action that has to performed
+Then: The expected outcome of the test can be represented by "Then"
+
+
+
+______________________________________________________________________
+
+
+Feature: Visit career guide page in career.guru99.com
+Scenario: Visit career.guru99.com
+Given: I am on career.guru99.com
+When: I click on career guide menu
+Then: I should see career guide page
+
+
+
+What is "Step Definition"?
+
+
+Step definition maps the Test Case Steps in the feature files(introduced by Given/When/Then) to code.
+It which executes the steps on Application Under Test and checks the outcomes against expected results. For a step definition to be executed, it must match the given compoent in a feature. Step definition is defined in ruby files under "features/step_definitions/*_steps.rb".
+
+
+
+Feature File-
+
+Feature: Visit career guide page in career.guru99.com
+Scenario: Visit career.guru99.com
+Given: I am on career.guru99.com
+When: I click on career guide menu
+Then: I should see career guide page
+
+
+Step definiton file-
+
+
+Step 1:
+
+Given (/^ I am on career.guru99.com$/) do
+
+Browser.goto "http://career.guru99.com" -This will visit career.guru99 on browser
+
+end
+
+Step 2:
+When (/^ click on career guide menu$/) do
+
+Browser.text (:name, " career guide" ).click – This will click "career guide menu"
+
+end
+	
+Step 3:
+
+Then (/^ I should see career guide page$/) do
+
+Browser.goto "http://career.guru99.com/category/career-guide/" - It will visit "career guide page"
+
+end
+
+
+
+
+
+You need 2 Files – Features and Step Definition to execute a Cucmber test scenario
+Features file contain high level description of the Test Scenario in simple language
+Steps Definition file contains the actual code to execute the Test Scenario in the Features file.
+
+
+
+
+
+

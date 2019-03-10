@@ -1,0 +1,195 @@
+MRTF_Dashboard_Design_Code-
+***************************************************************************************
+
+html file-
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid" style="background-color:#3c8dbc;">
+      <div class="navbar-header" >
+        <h3 style="color: white;">MRTF Dashboard<span style="margin-left: 30px;" class="glyphicon glyphicon-align-justify"></span></h3>
+      </div>
+    </div>
+  </nav>
+  <nav id="sidebar">
+      <ul class="list-unstyled components">
+          <li class="active">
+              <a href="#">
+                  <i class="glyphicon glyphicon-dashboard"></i>
+                  Dashboard
+              </a>
+          </li>
+          <li>
+              <li class="active">
+                  <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true">
+                      <i class="glyphicon glyphicon-eye-open"></i>
+                  Executive View
+              </a>
+              <ul class="collapse list-unstyled" id="homeSubmenu">
+                  <li><a href="#" class="glyphicon glyphicon-calendar">Daily</a></li>
+                  <li><a href="#" class="glyphicon glyphicon-calendar">Weekly</a></li>
+                  <li><a href="#" class="glyphicon glyphicon-calendar">Monthly</a></li>
+                  <li><a href="#" class="glyphicon glyphicon-calendar">Annual</a></li>
+              </ul>
+              </li>
+              <li>
+              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+                  <i class="glyphicon glyphicon-user"> </i>
+                  Developer View
+              </a>
+              <ul class="collapse list-unstyled" id="pageSubmenu">
+                  <li><a href="#" class="glyphicon glyphicon-calendar"> Run Info</a></li>
+                  <li><a href="#" class="glyphicon glyphicon-calendar"> Test Info</a></li>
+              </ul>
+          </li>
+          <li class="active">
+              <a href="#">
+                   <i class="glyphicon glyphicon-flash"></i>
+                  KPI
+              </a>
+          </li>
+          <li class="active">
+              <a href="#">
+                    <i class="glyphicon glyphicon-eye-open"></i>
+                  Custom View
+              </a>
+          </li>
+      </ul>
+  </nav>
+  <div style="text-align: center;">
+      <h1 align="center" style="color:blue;">Welcome to MRTF Dashboard Home Page.</h1>
+      <br>
+      <h3 style="margin-left: 230px;margin-right: 5px;">MRTF (MR Testing Framework) is an automated testing framework that allows multiple subsystem, and potentially hardware and system, testing. 
+
+          Current focus is on the core elements needed to drive testing, support needed for Bay HAST, and support needed to automate portions of Host integration testing.</h3>
+<br>
+<br>
+<p align="right" style="margin-right: 20px;">
+<a href="https://devcloud.swcoe.ge.com/devspace/display/TAWFF/MRTF" style="font-size: 30px; text-decoration: underline" target="_blank">MRTF Confluence Page</a>
+</p>
+     </div>
+ 
+
+
+
+_____________________________________________________________________
+
+css file-
+
+      /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+   .row.content {height: 1500px}
+   
+   
+
+   
+   /* On small screens, set height to 'auto' for sidenav and grid */
+   @media screen and (max-width: 767px) {
+     .sidenav {
+      height: auto;
+        padding: 15px;
+     }
+     .row.content {height: auto;} 
+   }
+
+
+   .glyphicon.glyphicon-list
+   {
+     font-size: 15px;
+
+   }
+
+   .glyphicon.glyphicon-align-justify
+   {
+     font-size: 15px;
+   }
+
+   #sidebar {
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    background-color:black;
+    padding-top: auto;
+    margin-top: 1px;
+    color: black;
+}
+
+#sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+#sidebar.active .sidebar-header h3, #sidebar.active .CTAs {
+    display: none;
+}
+
+#sidebar.active .sidebar-header strong {
+    display: block;
+}
+
+#sidebar ul li a {
+    text-align: left;
+}
+
+#sidebar.active ul li a {
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+#sidebar.active ul li a i {
+    margin-right:  0;
+    display: block;
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+#sidebar.active ul ul a {
+    padding: 10px !important;
+}
+
+#sidebar.active a[aria-expanded="false"]::before, #sidebar.active a[aria-expanded="true"]::before {
+    top: auto;
+    bottom: 5px;
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+}
+
+/* #sidebar .sidebar-header {
+    padding: 20px 10px;
+    background: #6d7fcc;
+    text-align: center;
+} */
+
+#sidebar .sidebar-header strong {
+    display: none;
+    font-size: 1.8em;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    /* border-bottom: 1px solid #47748b; */
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+/* #sidebar ul li a:hover {
+    color:grey;
+    background: #fff;
+} */
+#sidebar ul li a i {
+    margin-right: 10px;
+}
+
+ #sidebar ul li.active > a,a[aria-expanded="true"] {
+    color: #fff;
+} 
+
+
+

@@ -1,0 +1,92 @@
+creating_Separate_Modules-
+*******************************************************************************************8
+
+Create a older under apps folder and name  it as Students folder
+
+
+Students.module.ts-
+
+
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StudentsComponent } from './Students.Component';
+
+
+@NgModule({
+  imports:      [ BrowserModule ],
+  declarations: [ StudentsComponent ],
+  exports:      [ StudentsComponent],
+  bootstrap:    [ StudentsComponent ]
+})
+export class StudentsModule { }
+
+
+
+______________________________________________________________________
+
+Students.component.ts-
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-student',
+  template:`This is the student component!!`,
+})
+
+export class StudentsComponent {
+
+}
+
+___________________________________________________________________
+
+app.module.ts-
+
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import {StudentsModule} from './Students/Students.module';
+import {StudentsComponent} from './Students/Students.Component';
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    StudentsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+_______________________________________________________________________________
+
+app.component.ts-
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+}
+
+
+
+_____________________________________________________________________
+
+app.component.html-
+
+<app-student></app-student>
+

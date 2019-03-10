@@ -1,0 +1,102 @@
+Passing_data_Input_Output-
+**********************************************************************8
+
+
+parentcomponent.ts-
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  templateUrl: './parent.component.html',
+  styleUrls: ['./parent.component.css']
+})
+export class ParentComponent implements OnInit {
+
+  name:string="Angular 2 app";
+  dataFromChild:string;
+  handleNotify(eventData: string) {
+    this.dataFromChild = eventData;
+    console.log(this.dataFromChild);
+  } 
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+
+
+__________________________________________________________________________--
+parentcomponent.html-
+
+<h3>This is the parent component and below it is the Child component</h3>
+{{"This will populate data once we click on panel--" + dataFromChild}}
+
+<app-child [name]="name" (notify)="handleNotify($event)"></app-child>
+
+
+
+_________________________________________________________________________
+
+childcomponet.ts-
+
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnInit {
+
+  @Input()
+  name:string;
+
+   str: string='Gaurav Rattan';
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+
+  handleClick() {
+    this.notify.emit(this.str);
+  }
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+
+
+
+______________________________________________________________________________
+
+childcomponent.html-
+
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnInit {
+
+  @Input()
+  name:string;
+
+   str: string='Gaurav Rattan';
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+
+  handleClick() {
+    this.notify.emit(this.str);
+  }
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+
+
+
+_________________________________________________________________________
