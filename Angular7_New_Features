@@ -1,0 +1,65 @@
+New features in angular 7
+Now, without any further adieu, let’s dive into discussing the new features of Angular 7 one-by-one, and see how each of them improve the frontend development process for the better.
+
+1. CLI prompts
+In Angular 7, the CLI prompts have been updated to v7.0.2 with new features. For instance, it will now prompt users when typing commands like @angular/material, ng-new, and ng-add to help them discover the in-built SCSS support, routing, and more.
+
+angular virtual scroll drag drop cli prompts
+
+These CLI prompts, in addition, have been added to Schematics, so that all package publishing schematics can now benefit from CLI prompts.
+
+2. Angular material & component dev kit (CDK)
+The Angular 7 introduced minor visual updates & improvements in Material Design that earlier received a major update this year only.
+
+In addition, refresh, virtual scrolling, large lists of data, dynamic loading and unloading of parts of the DOM also were the part of improvements in CDK and Angular Material.
+
+History of angular’s versions angular material component dev kit (cdk)
+
+Furthermore, the applications in Angular 7 can now also be fitted with drag-and-drop functionality by either importing ScrollingModule or DragDropModule.
+
+3. Drag & drop
+The new drag-drop module basically provides a better way to easily create drag & drop interfaces, which is backed by sorting within a list, support for free dragging, animations, custom drag handles, transferring items between lists, previews, and placeholders.
+
+angular virtual scroll drag drop
+
+In simple terms, the Drag-and-Drop support has now been implemented in CDK and it also includes automatic rendering as the users relocates items.
+
+angular virtual scroll drag drop virtual scrolling
+
+angular virtual scroll drag drop virtual scrollings
+
+4. Virtual scrolling
+Like mentioned earlier, the new Virtual Scrolling in Angular 7 basically loads and unloads items from the DOM depending upon visible parts of lists, resulting into a much faster experiences for users having huge scrollable lists.
+
+This virtual scrolling package basically provides helpers, which react to all scroll events.
+
+angular virtual scroll drag drop angular material component dev kit (cdk)
+
+Simply put, it activates a high-performant way by making the height of container element exactly same as the height of total number of remaining elements to be rendered.
+
+This, in turn, then renders the only visible items in view, creating faster experiences for the end-users.
+
+5. Application performance improvements
+The development team at Google have always focused on the performance improvements, and while doing so, they recently found that most of the developers were using reflect-metadata in their production, which actually was only required in the development.
+
+angular virtual scroll drag drop angular Highlights
+
+So, to fix this problem, they’ve made a part of Angular 7 to automatically remove this from the polyfills.ts file.
+
+History of angular’s versions angular 7 highlights
+
+Upgrading requirements
+The Upgrading process is really simple. For most Angular apps out there that are running on Angular 6 and RxJS 6, you only need to run a single command stated below to upgrade to Angular 7.
+
+angular virtual scroll drag drop code
+
+If, however, you’re using Angular Material, use following single line command and you’re good to go!
+
+angular virtual scroll drag drop material
+
+During the upgrade process, if anything seems unusual, check out the update guide to see if you need to execute any special commands.
+
+Takeaway
+All in all, the Angular 7 seems like a far better solution. The Angular development team has certainly did a great job in making the Angular platform better.
+
+
