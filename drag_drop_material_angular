@@ -1,0 +1,129 @@
+Setup
+First, make sure that the package for the CDK itself is added to your project:
+
+$ npm install @angular/cdk
+
+app.module.ts
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
+After that also add it to the list of imports imports:
+
+app.module.ts
+
+imports: [
+  DragDropModule
+]
+_______________________________________________________________________
+Drag & Drop Interface
+Drag & Drop Interface with 4 Task Trackers
+So, now that all the APIs are available we can use all the directives and modules provided by DragDropModule, and by using it we’re going to create 4 task tracks  In Progress, Todo, D-Done & QA Pass.
+
+Here I'm using the mat-card & mat-card-content components to show the tasks. In order to use this, You must also have Angular Material added to your project.
+
+Here’s a first drag & drop example:
+
+app.component.html
+
+<!-- 4 Task trackers are there named "Todo", "In Progress", "D-Done" & "QA-Pass" -->
+
+<div class="board">
+  <div class="card-list mat-elevation-z1" *ngFor="let track of tracks; let i=index">
+
+    <h2 cdkDragHandle class="mat-h2">{{track.title}}</h2>
+
+    <div class="card-list-content" cdkDropList [id]="track.id" [cdkDropListData]="track.tasks" [cdkDropListConnectedTo]="trackIds"
+      (cdkDropListDropped)="onTaskDrop($event)" [ngStyle]="{'background-color': trackColor[i]}">
+
+
+      <mat-card style="margin: 2%;" *ngFor="let task of track.tasks" cdkDrag>
+        <!-- Use the mat-card-content to add the proper spacing. -->
+        <mat-card-content>
+          <h2>{{task.title}}</h2>
+          {{task.description}}
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div>
+_______________________________________________________________________
+
+onTaskDrop(event: CdkDragDrop<Task[]>) {
+  if (event.previousContainer === event.container) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  } else {
+    transferArrayItem(event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex);
+  }
+}
+
+____________________________________________________________________________
+And below is the data which we are using to render the trackers and tasks:
+
+[
+  {
+    "title": "Todo",
+    "id": "todo",
+    "tasks": [
+      {
+        "id": "first-task",
+        "title": "First Task",
+        "description": "This is my first task"
+      }
+    ]
+  },
+  {
+    "title": "In Progress",
+    "id": "inprogress",
+    "tasks": [
+      {
+        "id": "seconf-task",
+        "title": "Second Task",
+        "description": "This is my first task"
+      }
+    ]
+  },
+  {
+    "title": "D-Done",
+    "id": "ddone",
+    "tasks": [
+      {
+        "id": "third-task",
+        "title": "Third Task",
+        "description": "This is my first task"
+      }
+    ]
+  },
+  {
+    "title": "QA Pass",
+    "id": "qapass",
+    "tasks": [
+      {
+        "id": "fourth-task",
+        "title": "Fourth Task",
+        "description": "This is my first task"
+      }
+    ]
+  }
+]
+Here is how it works:
+The cdkDropList directive is applied to a container that wraps a set of draggable items. You can add cdkDropList elements to constrain where elements may be dropped. In our example it will be the Task Tracks
+The cdkDropList directive has many properties and cdkDropListData is one of them, Which is used to add data arbitrarily to the container. In our example we are attaching Task Tracks as our data.
+cdkDropListDropped is an event which gets emitted when the user drops an item inside the container. In our example whenever any task gets dropped inside any of the task tracks, it will call the onTaskDrop($event) method.
+Here’s an example method for handling the drop event:
+
+app.component.ts
+
+onTaskDrop(event: CdkDragDrop<Task[]>) {
+  if (event.previousContainer === event.container) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  } else {
+    transferArrayItem(event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex);
+  }
+}
+Nothe the conditional statement as part of the method. In case the destination container is different from the previous container, we need to transfer the given task to the target data array. This happens if a task has been dropped on a different track.
