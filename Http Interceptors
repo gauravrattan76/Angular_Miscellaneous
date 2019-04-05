@@ -1,0 +1,246 @@
+In the world of Angular, interceptors have been used to pre-process and post-process the HTTP request before sending and after getting response from the server. Interceptors can be used in two different phases in a life cycle of an HTTP request to a server, which are:
+
+1. Before making the request server: This happens before the call is made to server. It can be used change the request configuration of HTTP call. The most common use case for this is to add an Access Token to be sent to the server with each HTTP request so that it can be validated at server end.
+
+2. After Getting the response from server: This happens once we get the response from the server. It can be used change the response before it is being passed to the code block from where HTTP call was made. The most common use case for this is to Handle Global Error Handling across the app.
+
+Why we need HTTP Interceptors:
+
+According to Angular Team at Google “When your application makes a request, interceptors transform it before sending it to the server, and the interceptors can transform the response on its way back before your application sees it.”
+
+If in your application, you want a common place where you can check for all the request made to server from your application and check all the responses from the server, the best way is to use “INTERCEPTORS”.
+
+What are we going to create:
+We are going to build a simple Interceptor, which will intercept all the requests and responses from the server and log them into browser’s console, so that we will be able to see our interceptor in action.
+
+Getting Started:
+We are going to use an online code editor stackblitz. This tool will create a starter project using angular cli for you. This tool is awesome and provide so many features. For more info please go to https://stackblitz.com/ .
+
+Below is the screen shot for the starter project created for your references:
+
+
+Stackblitz.com
+How to Implement the Interceptors in Angular with code:
+
+Below is the list of steps we need to do to implement the Interceptors in our Angular App:
+
+1. We need to Import the HttpClientModule into our application in app.
+
+2. We need to add a Class decorated with Injector Decorator, where we will write our logic for Interceptors.
+
+3. Then we need to provide information to angular to use our class from 2nd step as interceptors.
+
+Enough with the theory now, let’s do some coding now.
+
+First of all, to make any http call we need to import HttpClientModule into our application in app.module.ts as follow:
+
+____________________________________________________________________________________
+Importing httpclientmodule-----
+
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  imports: [BrowserModule, HttpClientModule],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+________________________________________________________________________________________
+After this, we need to add a class which will work as an interceptor for us. Let’s create a file named as my-interceptor.ts and copy the below code in it save it.
+_________________________________________________________________________________________
+
+
+import { Injectable } from "@angular/core";
+import { tap } from "rxjs/operators";
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpResponse,
+  HttpErrorResponse
+} from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+
+@Injectable()
+export class MyInterceptor implements HttpInterceptor {
+  constructor() { }
+  //function which will be called for all http calls
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    //how to update the request Parameters
+    const updatedRequest = request.clone({
+      headers: request.headers.set("Authorization", "Some-dummyCode")
+    });
+    //logging the updated Parameters to browser's console
+    console.log("Before making api call : ", updatedRequest);
+    return next.handle(request).pipe(
+      tap(
+        event => {
+          //logging the http response to browser's console in case of a success
+          if (event instanceof HttpResponse) {
+            console.log("api call success :", event);
+          }
+        },
+        error => {
+          //logging the http response to browser's console in case of a failuer
+          if (event instanceof HttpResponse) {
+            console.log("api call error :", event);
+          }
+        }
+      )
+    );
+  }
+}
+view rawmy-interceptor.ts hosted with ❤ by GitHub
+
+
+________________________________________________________________________________________
+
+
+
+
+I know this is a lot of code, but don’t be afraid. Let me explain the above code, then it will be clear for your guys.
+
+1. First we are importing the necessary modules:
+
+____________________________________________________________
+import { Injectable } from "@angular/core";
+import { tap } from "rxjs/operators";
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpResponse,
+  HttpErrorResponse
+} from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+
+______________________________________________________________
+Necessary Imports
+2. Here I am creating our interceptor class which is implementing HttpInterceptor Interface which is provided http module to create Interceptors:
+________________________________________________________________
+@Injectable()
+export class MyInterceptor implements HttpInterceptor {
+  constructor() { }
+  _____________________________________________________________
+  
+3. Here we are implementing the Interceptor function provided by HttpInterceptor interface.
+__________________________________________________________________________________________
+
+ intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+  
+  
+  _______________________________________________________________________________
+
+
+4. Here we are updating our request parameter by adding a header field “Authorization”.
+
+_____________________________________________________________________________________
+
+const updatedRequest = request.clone({
+      headers: request.headers.set("Authorization", "Some-dummyCode")
+    });
+
+____________________________________________________________________________________
+
+
+This is the main code block of our interceptor logic where we are intercepting all the request and responses.
+
+______________________________________________________________________________________
+
+    return next.handle(request).pipe(
+      tap(
+        event => {
+          //logging the http response to browser's console in case of a success
+          if (event instanceof HttpResponse) {
+            console.log("api call success :", event);
+          }
+        },
+        error => {
+          //logging the http response to browser's console in case of a failuer
+          if (event instanceof HttpResponse) {
+            console.log("api call error :", event);
+          }
+        }
+      )
+    );
+  }
+  
+  ______________________________________________________________________________________
+
+
+I hope now it is clear to all of you guys what we are actually doing in interceptor class.
+
+Now we have all the logic for our interceptors, but it will not work as we haven’t notified Angular to use this class as an interceptor. For this we need modify our app.module.ts file. Let’s just do that:
+__________________________________________________________________________________________________
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { MyInterceptor } from './my-interceptor';
+
+@NgModule({
+  imports: [BrowserModule, HttpClientModule],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyInterceptor,
+      multi: true
+    }
+  ]
+})
+export class AppModule { }
+
+
+_________________________________________________________________________________________
+
+
+
+
+Now our code is ready. Now we just need to make some Http Calls to verify if our interceptor is working as expected or not.
+
+Let’s just modify our app.component.ts, to make some dummy http call and then check for the console to see the logs.
+
+__________________________________________________________________________________________
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+@Component({
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  name = 'Angular 5';
+  constructor(private _http: HttpClient) {
+    this._http.get('https://api.myjson.com/bins/7xq2x1').subscribe(() => {
+      console.log('Http Call is success from compoennt');
+    }, (error) => {
+      console.log('Http Call is failed from component');
+    })
+  }
+}
+
+_________________________________________________________________________________________________
+
+
+Below is the browser console screen shot, we can see our interceptor is working and our header “Authorization” is getting added for all the requests:
+
+
+You can find all the source code for this project here. You can play with the code and see all the messages at console.
