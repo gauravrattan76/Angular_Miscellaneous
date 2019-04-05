@@ -1,0 +1,87 @@
+
+What’s an SPA?
+A single-page application works in the browser and requires no page reloads and no extra time for waiting. The page doesn’t need to be updated since content is downloaded automatically. We use these types of applications every day. Just think of Facebook or Trello. These are excellent examples of single-page apps.
+
+
+Advantages of Single-Page Applications
+Fast and responsive
+Since single-page applications don’t update the entire page but only required content, they significantly improve a website’s speed. Most resources (HTML/CSS/Scripts) are only loaded once throughout the lifespan of an application. Only data is transmitted back and forth. This is a great advantage, and according to Google research, if a page takes more than 200 milliseconds to load it can have a potentially high impact on business and sales.
+
+Caching capabilities
+A single-page app can cache any local data effectively. An SPA sends only one request to a server and then stores all the data it receives. Then it can use this data and work even offline. If a user has poor connectivity, local data can be synchronized with the server when the connection allows.
+
+Linear user experience
+SPAs provide users with a simple linear experience. These web apps – like Saucony, for example – contain a clear beginning, middle, and end. The Saucony web app provides an excellent interactive experience using parallax scrolling and amazing transitions and effects to present the complete customer journey.
+
+Saucony
+Example of SPA "Saucony"
+With SPAs, scrolling is convenient and uninterrupted; there’s no need to click on endless links. Indeed, the scrolling nature of SPAs makes them perfectly suited for mobile users who have become accustomed to scrolling.
+
+Debugging with Chrome
+It’s easy to debug an SPA with Chrome since such apps are developed on frameworks like AngularJS Batarang and React developer tools. These frameworks have their own Chrome developer tools that make debugging much easier than with MPAs. In addition, SPAs allow you to monitor network operations and investigate page elements and data associated with them.
+
+But with all their benefits, SPAs also have some disadvantages that you should consider. Let’s take a look at them.
+
+Disadvantages of Single-Page Applications
+SEO optimization
+Some people are of the opinion that SPAs provide poor SEO optimization. This is because single-page apps operate on JavaScript and download data on request from the client side. The URL doesn’t really change and different pages don’t have their unique URL addresses. It’s hard to optimize these websites for search engines since most pages can’t be scanned by search bots.
+
+Recently, Google launched a new scheme to increase single-page app SEO optimization. Google now indexes dynamic pages. But for this, developers need to make sure that their JavaScript files can be indexed by Google (because Google runs them in their crawler). They also need to verify that a website uses HTML5 mode in the URL scheme.
+
+Browser history
+An SPA doesn’t save visitors’ jumps between states. This means that when users click the back button, they won’t go back. A browser only takes users to the previous page, not to the previous state in an app.
+
+To solve this problem, there’s an HTML5 History API with which developers can equip their SPA frameworks. The History API offers developers access to browser navigation history via JavaScript.
+
+Security issues
+Single-page apps are less immune to cross-site scripting (XSS) attacks than are multi-page apps. Using XSS, hackers can inject client-side scripts into web applications.
+
+One security issue is the exposure of sensitive data. If developers aren’t careful about what data is contained in the initial page load, they can easily send data that shouldn’t be exposed to all users. The whole of an SPA isn’t generally visible in the browser, which can provide a false sense of security.
+
+One more reason that SPAs can be insecure is missing access control at the functional level. Since developers move features and logic off the server and out to the client, it’s really easy to provide a client with access to functions that they shouldn’t be permitted to use.
+
+When to use an SPA
+Single-page web applications fit perfectly for building dynamic platforms with small data volumes. Furthermore, a single-page app is ideal as a base for future mobile app development. The main drawback of this development approach is poor SEO optimization. But this architecture is excellent for SaaS platforms, social networks, and closed communities where search engine optimization doesn’t matter. If a project requires effective SEO, on the other hand, then you should use a multi-page application.
+
+What’s an MPA?
+To picture an MPA, just think of any complex website with multiple pages like Amazon or eBay.
+
+eBay
+Example of MPA "eBay"
+The example is an online store that consists of several pages with static information (text, images, etc.) and a lot of links to other pages. Multi-page apps work in a traditional way and are extremely large out of necessity. Due to the amount of content they contain, multi-page apps are generally many levels deep with lots of links and intricate UIs. As shown in the above example, an MPA can consist of many micro-websites and subsections to break down content and allow multiple entry points.
+
+The main technologies for building multi-page websites are HTML and CSS. To increase speed and reduce the load, many developers use JavaScript and jQuery.
+
+Before choosing this development approach, let’s look at the key advantages and disadvantages of building multi-page applications.
+
+Advantages of Multi-Page Applications
+SEO
+SEO is better on MPAs since the architecture is native to search engine crawlers. Such apps provide better control over SEO thanks to multiple pages and changing content. Moreover, developers can add meta tags to every page. An MPA gives a better chance of ranking for different keywords since an app can be optimized for one keyword per page.
+
+Unlimited scalability
+MPAs allow you to create new content and place it on new pages. Multi-page apps can include as much information about products or services as required, with no page limitations. Single-page applications don’t allow a lot of features on one page, which can lead to longer loading times. Therefore, when company needs more features, they decide to use multi-page applications.
+
+Insights from Google Analytics
+MPAs can provide lots of analytics with valuable information on how a website is performing: which features are working and which aren’t. With a single-page app, the only useful information you can collect is who visitors are and for how long they stay on the site.
+
+Disadvantages of Multi-Page Applications
+Along with the advantages there are some considerable disadvantages of building a multi-page app. Let’s consider them.
+
+Slow speed and performance
+With multi-page apps, a server needs to reload most resources such as HTML, CSS, and scripts with every interaction. When loading another page, the browser completely reloads page data and downloads all resources again, even components that are repeated throughout all pages (e.g. the header and footer). This affects speed and performance.
+
+More time for development
+Compared to SPAs, MPAs take longer to develop. In most cases, developers have to code the backend from scratch. There are also difficulties in frontend and backend separation since they interact very closely with each other. Developers need to use frameworks for both the frontend or backend. This results in longer app development.
+
+Maintenance and updates
+Maintaining and updating multiple pages can be a chore, and things only get worse the larger a website becomes. In addition, maintaining security may be problematic because developers need to secure each separate page. Single-page apps allow developers to just secure data endpoints.
+
+When to use an MPA
+A multi-page application is appropriate for large companies with a broad range of products or services that require lots of features and multiple menus. An MPA is more suitable for online stores, business sites, catalogs, and marketplaces. Companies running these sites probably also have diverse user bases. To put it simply, if you have a lot of content and features to include on your website or if you’ reselling multiple products and services, then an MPA would be a good choice.
+
+SPA or MPA?
+Each architecture has its pros and cons and is well suited to a particular type of project and specific business goals. If you’re ready to build a web app and are trying to decide between an SPA and an MPA, get in touch with us and we’ll analyze your business needs to come up with the most viable solution.
+
+
+
+
