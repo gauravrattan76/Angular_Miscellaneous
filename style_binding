@@ -1,0 +1,43 @@
+<button style="color:red">My Button</button>
+
+
+                <button style='color:red'
+                        [style.font-weight]="isBold ? 'bold' : 'normal'">My Button
+                </button>
+              `
+})
+export class AppComponent {
+    isBold: boolean = true;
+}
+
+
+                <button style='color:red'
+                        [style.font-size.px]="fontSize">My Button
+                </button>
+              `
+})
+export class AppComponent {
+    fontSize: number = 30;
+}
+
+
+@Component({
+    selector: 'my-app',
+    template: ` <button style='color:red' [ngStyle]="addStyles()">My Button</button>
+                    `
+})
+export class AppComponent {
+    isBold: boolean = true;
+    fontSize: number = 30;
+    isItalic: boolean = true;
+
+    addStyles() {
+        let styles = {
+            'font-weight': this.isBold ? 'bold' : 'normal',
+            'font-style': this.isItalic ? 'italic' : 'normal',
+            'font-size.px': this.fontSize
+        };
+
+        return styles;
+    }
+}
