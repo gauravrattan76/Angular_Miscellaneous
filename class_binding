@@ -1,0 +1,38 @@
+<button class="colorClass">Click Me</button>//apply color class
+_____________________________________________________________
+<button class="colorClass [class] ="classToApply">Click Me</button>//remove the color class and aplly the other classes
+
+
+classToApply = "boldClass styleClass"
+
+_____________________________________________________________
+
+we can  add or remov a single class without affecting the classes
+
+<button class="colorClass boldClass styleClass" [class.boldClass] ="applyBoldClass">Click Me</button>//we are removing the class here
+
+
+applyBoldClass = flase
+
+
+______________________________________________________________
+
+
+<button class="colorClass" [ngClass]="classesToApply()">click me</button>
+
+
+
+classesToApply(){
+    let classes={
+      colorClass: true,
+      boldClass:true,
+      styleClass:true
+    }
+    return classes;
+  }
+  
+  
+  Notice the colorClass is added using the class attribute
+ngClass is binded to addClasses() method of the AppComponent class
+addClasses() method returns an object with 2 key/value pairs. The key is a CSS class name. The value can be true or false. True to add the class and false to remove the class.
+Since both the keys (boldClass & italicsClass) are set to true, both classes will be added to the button element
